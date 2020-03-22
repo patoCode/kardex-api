@@ -1,5 +1,13 @@
-# kardex-api
-El API permite realizar asientos en el kardex 
-El API permite saber el precio ponderado de un producto
-La creacion de registros tiene el
-formato TS, ID, QTY, PRECIO (fecha, id de producto, cantidad, precio)
+# KARDEX-API
+* Nodejs + MongoDB(necesario)
+* Api rest para consultas en kardex usando el precio promedio ponderado
+
+## Ejecutar
+```
+npm install
+npm run dev
+```
+
+## API TEST
+Requiere REST CLIENTE (extension de VisualStudioCode)
+> Abrir el archivo test.rest y ejecutar las pruebas

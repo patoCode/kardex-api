@@ -1,24 +1,25 @@
 POST http://localhost:3000/api/weigh
 Content-Type: application/json
 
-
 {
     "id": "5e742e32089beb0738af4bac",
     "price": 35.5, 
     "qty": 54
 }
+
+
 ###
 POST http://localhost:3000/api/add
 Content-Type: application/json
 
 {
     "item":{
-        "name": "Item1",
-        "description": "Dwscripcion de item 1",
+        "name": "Item 100",
+        "description": "Descripcion de item 1",
         "status": "active",
-        "price": 152.00,
-        "qty": 54,
-        "oldPrice": 151.85
+        "price": 158.00,
+        "qty": 4,
+        "oldPrice": 0
     }
 }
 
@@ -30,7 +31,6 @@ Content-Type: application/json
 GET http://localhost:3000/api/item/5e742e32089beb0738af4bac
 Content-Type: application/json
 
-
 ###
-GET http://localhost:3000/api/item/history/5e76e533401d722f90dbafda
+GET http://localhost:3000/api/item/history/5e742e32089beb0738af4bac
 Content-Type: application/json

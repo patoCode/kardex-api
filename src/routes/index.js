@@ -54,7 +54,7 @@ router.get('/api/item/:id', async (req, res) => {
 })
 router.get('/api/item/history/:id', async (req, res) => {
 	const id = req.params.id
-	const historico = await Historico.find({"item":id})	
+	const historico = await Historico.find({"item":id}).sort({_id: -1})	
 	res.json({
 		status:'success',
 		body: historico
