@@ -2,22 +2,62 @@ const router = require('express').Router()
 const Item = require('../models/Item')
 const Historico = require('../models/Historico')
 
-router.get('/',async (req, res)=>{
+router.get('/api/',async (req, res)=>{
 	const items = await Item.find().sort({lastbuy:'desc'})
-	res.json(items)
+	res.json({
+		status: 'success',
+		body:items
+	})
 })
-router.get('/add', async (req, res) => {
-	const item = {
-		name: 'Item1',
-		description: 'Dwscripcion de item 1',
-		status: 'active',
-		price: 152.00,
-		qty: 54,
-		oldPrice: 151.85
-	}
-	const newItem = new Item(item)
-	await newItem.save()
-	res.send('ok')
+router.post('/api/add', async (req, res) => {	
+	const newItem = new Item(req.body.item)
+	const itemBBDD = await newItem.save()
+	res.json({
+		status: 'success',
+		body: itemBBDD
+	})
+})
+router.post('/api/weigh', async (req, res) => {
+	const {id, price, qty} = req.body
+	const itemBBDD = await Item.findOne({"_id":id})	
 
+	// MODIFIDY VALUES
+	const totalQty =  itemBBDD.qty+qty
+	const buyPrice = price * qty
+	const stockPrice = itemBBDD.price * itemBBDD.qty
+	const weighPrice = ((buyPrice + stockPrice) / totalQty).toFixed(2)
+
+	//REGISTRY HISTORICO
+	const historico = {
+		item: itemBBDD._id,
+		newPrice: price,
+		oldPrice: itemBBDD.price,
+		weighPrice: weighPrice,
+		qty: qty,
+		stockQty: itemBBDD.qty,		
+		totalqty: totalQty
+	}
+	const newHistorico = new Historico(historico)
+	const historicoBBDD = await newHistorico.save()
+
+	// EDIT ITEM PRICE
+	const updateItem = await Item.updateOne({"_id":id},{"qty":totalQty, "price": weighPrice, "weighDate": historicoBBDD.reg})
+	res.json(updateItem)
+})
+router.get('/api/item/:id', async (req, res) => {
+	const id = req.params.id
+	const itemBBDD = await Item.findOne({"_id":id})	
+	res.json({
+		status:'success',
+		body: itemBBDD
+	})
+})
+router.get('/api/item/history/:id', async (req, res) => {
+	const id = req.params.id
+	const historico = await Historico.find({"item":id})	
+	res.json({
+		status:'success',
+		body: historico
+	})
 })
 module.exports = router

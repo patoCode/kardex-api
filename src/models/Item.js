@@ -7,7 +7,7 @@ const itemSchema = new Schema({
 	price:{ type: Number, default: 0},
 	qty:{ type: Number, default: 0},
 	oldPrice:{ type: Number, default: 0},
-	lastbuy:{ type: Date, default: Date.now}
+	weighDate:{ type: Date, default: Date.now}
 });
 
 module.exports = model('Item', itemSchema);
